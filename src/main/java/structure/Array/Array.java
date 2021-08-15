@@ -1,21 +1,21 @@
 package structure.Array;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class Array {
+public class Array<E> {
 
-    private int[] data;
+    private E[] data;
     private int size;
 //  有参构造，接收容量
     public Array(int capacity) {
-        data = new int[capacity];
+        data = (E[]) new Object[capacity];
         size = 0;
     }
 //  有参构造，接收静态数组
-    public Array(int[] array) {
+    public Array(E[] array) {
+        data = (E[]) new Object[array.length];
         for (int i = 0; i < array.length; i++) {
             data[i] = array[i];
         }
@@ -23,7 +23,7 @@ public class Array {
     }
 //  无参构造
     public Array() {
-        data = new int[10];
+        data = (E[]) new Object[10];
         size = 0;
     }
 //  获取数组容量
@@ -39,20 +39,20 @@ public class Array {
         return size == 0;
     }
 //  尾添加
-    public void addLast(int e) {
+    public void addLast(E e) {
         add(size, e);
     }
 //  头添加
-    public void addFirst(int e) {
+    public void addFirst(E e) {
         add(0, e);
     }
 //  向特定位置添加元素
-    public void add(int index, int e) {
-        if(size == data.length) {
-            //todo 扩容
-        }
+    public void add(int index, E e) {
         if(index < 0 || index > size) {
             throw new IllegalArgumentException("参数错误");
+        }
+        if(size == data.length) {
+            resize(2 * data.length);
         }
         for (int i = size-1;i >= index;i --) {
             data[i+1] = data[i];
@@ -61,32 +61,32 @@ public class Array {
         size++;
     }
 //  查询数组元素
-    public int get(int index) {
+    public E get(int index) {
         if(index < 0 || index > size) {
             throw new IllegalArgumentException("参数错误");
         }
         return data[index];
     }
 //  修改数组元素
-    public void set(int index, int e) {
+    public void set(int index, E e) {
         if(index < 0 || index > size) {
             throw new IllegalArgumentException("参数错误");
         }
         data[index] = e;
     }
 //  查找元素
-    public boolean contains(int e) {
-        for (int dataE : data) {
-            if(dataE == e) {
+    public boolean contains(E e) {
+        for (E dataE : data) {
+            if(dataE.equals(e)) {
                 return true;
             }
         }
         return false;
     }
 //  查找元素位置
-    public int find(int e) {
+    public int find(E e) {
         for (int i = 0; i < size; i++) {
-            if(data[i] == e) {
+            if(data[i].equals(e)) {
                 return i;
             }
         }
@@ -96,8 +96,8 @@ public class Array {
     public List<Integer> findAll(int e) {
         List<Integer> resultList = new ArrayList();
         for (int i = 0; i < size; i++) {
-            if(data[i] == e) {
-                resultList.add(e);
+            if(data[i].equals(e)) {
+                resultList.add(i);
             }
         }
         if(resultList.isEmpty()) {
@@ -105,35 +105,28 @@ public class Array {
         }
         return resultList;
     }
-//  删除全部特定元素
-    public void removeAll(int e) {
-        List<Integer> resultList = findAll(e);
-        if(resultList.isEmpty()) {
-            System.out.println("不存在这个元素");
-        }
-        Iterator<Integer> resIter = resultList.iterator();
-        while(resIter.hasNext()) {
-            remove(resIter.next());
-        }
-    }
 //  删除特定位置元素
-    public int remove(int index) {
+    public E remove(int index) {
         if(index < 0 || index >= size) {
             throw new IllegalArgumentException("参数错误");
         }
-        int ret = data[index];
+        if(size == data.length/2) {
+            resize(data.length/2);
+        }
+        E ret = data[index];
         for (int i = index+1;i < size;i ++) {
             data[i-1] = data[i];
         }
         size--;
+        data[size] = null;
         return ret;
     }
 //  删头
-    public int removeFirst() {
+    public E removeFirst() {
         return remove(0);
     }
 //  删尾
-    public int removeLast() {
+    public E removeLast() {
         return remove(size-1);
     }
 
@@ -150,5 +143,13 @@ public class Array {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    private void resize(int newcapacity) {
+        E[] newData = (E[])new Object[newcapacity];
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        data = newData;
     }
 }

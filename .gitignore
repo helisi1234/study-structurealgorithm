@@ -3,6 +3,7 @@
 ### maven  ###
 target/
 *.releaseBackup
+test/
 
 ### gradle ###
 gradle
