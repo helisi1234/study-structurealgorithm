@@ -1,0 +1,20 @@
+队列
+1.队列也是一种线性结构
+2.相比数组，队列对应的操作是数组的子集
+3.从一端添加元素，从另一端删除元素
+4.先进先出
+
+arrayqueue复杂度分析：
+  由于出队操作会引起数组的前移（复制）所以是o(n)的操作，数组队列不适合出队操作
+  void enqueue(e)    o(1)
+  E dequeue()        o(n)
+  E front()          o(1)
+  int getSize()
+  boolean isEmpty()
+
+loopqueue复杂度分析:
+  void enqueue(e)    o(1)
+  E dequeue()        o(1) 均摊
+  E front()          o(1)
+  int getSize()
+  boolean isEmpty()
