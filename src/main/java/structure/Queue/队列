@@ -18,3 +18,13 @@ loopqueue复杂度分析:
   E front()          o(1)
   int getSize()
   boolean isEmpty()
+
+因为对链表头的操作都是o(1)复杂度，所以适合实现stack结构，优化了数组实现的动态扩容
+并不需要在扩容时进行复制操作
+top e1 -> e2 -> e3 -> ... -> NULL
+
+使用链表实现队列
+head指向链表第一个元素，tail指向链表最后一个元素
+e1 -> e2 -> e3 -> e4 -> e5 -> e6 -> e7 -> NULL
+head（出队）                         tail（入队）
+当head = tail时队列为空
