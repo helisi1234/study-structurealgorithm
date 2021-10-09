@@ -35,6 +35,10 @@ public class LinkedList<E> {
         size = 0;
     }
 
+    public LinkedList(E[] elementArray) {
+
+    }
+
     public int getSize() {
         return size;
     }
